@@ -1,5 +1,6 @@
 #include <iostream>
 #include "BigInt.h"
+#include "BMath.h"
 
 int main() {
     std::cout << "Hello, World!" << std::endl;
@@ -7,7 +8,7 @@ int main() {
     // Tests Below
     unsigned long r;
     unsigned long c_o;
-    BigInt::ADDC(r,c_o,ULONG_MAX,12,0);
+    BMath::ADDC(r,c_o,ULONG_MAX,12,0);
     std::cout << r << " " << c_o <<std::endl;
 
     return 0;

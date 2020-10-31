@@ -31,7 +31,6 @@ public:
 
 
 //    static constexpr std::array<unsigned long,Ceil(434/machine_word)> construct_prime_P434();
-    static void ADDC(unsigned long &r, unsigned long &c_o, unsigned long a, unsigned long b, unsigned long c_i);
 
 private:
     unsigned long *mag;
