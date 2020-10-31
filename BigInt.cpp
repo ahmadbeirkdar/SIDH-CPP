@@ -12,6 +12,10 @@ BigInt::BigInt(unsigned long *mag, BigInt::Prime prime)
 
 }
 
+void BigInt::add_schoolbook(BigInt &r, BigInt &a, BigInt &c) {
+
+}
+
 //constexpr std::array<unsigned long,Ceil(434/machine_word)>  BigInt::construct_prime_P434() {
 //    switch (machine_word) {
 //        case 64:

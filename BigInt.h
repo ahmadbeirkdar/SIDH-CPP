@@ -28,6 +28,7 @@ public:
 
     BigInt()=default;
     explicit BigInt(unsigned long *mag, BigInt::Prime prime = BigInt::Prime::P434);
+    void add_schoolbook(BigInt& r,BigInt& a, BigInt &c);
 
 
 //    static constexpr std::array<unsigned long,Ceil(434/machine_word)> construct_prime_P434();
