@@ -32,7 +32,7 @@ public:
 
 //    static constexpr std::array<unsigned long,Ceil(434/machine_word)> construct_prime_P434();
 
-//private:
+private:
     unsigned long *mag;
     int length;
     Prime prime;
