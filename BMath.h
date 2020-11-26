@@ -17,8 +17,9 @@ namespace BMath {
      * @param c_i - Carry in
      * @return - void
      */
-    inline constexpr void ADDC(unsigned long &r, unsigned long &c_o, unsigned long a, unsigned long b, unsigned long c_i){
-        if(__builtin_uaddl_overflow(a,b,&r) || __builtin_uaddl_overflow(a+b,c_i,&r))
+    template <typename T>
+    inline constexpr void ADDC(T &r, T &c_o, T a, T b, T c_i){
+        if(__builtin_add_overflow(a,b,&r) || __builtin_add_overflow(a+b,c_i,&r))
             c_o = 1;
         else{
             r = a + b + c_i;
@@ -35,13 +36,14 @@ namespace BMath {
      * @param c_i - Carry in
      * @return - void
      */
-    inline constexpr void SUBC(unsigned long &r, unsigned long &c_o, unsigned long a, unsigned long b, unsigned long c_i){
-        if(__builtin_usubl_overflow(a,b,&r)){
+    template <typename T>
+    inline constexpr void SUBC(T &r, T &c_o, T a, T b, T c_i){
+        if(__builtin_sub_overflow(a,b,&r)){
 //            unsigned long temp = a + (ULONG_MAX - b) + 1;
-            __builtin_usubl_overflow(r,c_i,&r);
+            __builtin_sub_overflow(r,c_i,&r);
             c_o = 1;
         }
-        else if(__builtin_usubl_overflow(a-b,c_i,&r))
+        else if(__builtin_sub_overflow(a-b,c_i,&r))
             c_o = 1;
         else{
             r = a - b - c_i;
