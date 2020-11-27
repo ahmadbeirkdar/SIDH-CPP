@@ -20,7 +20,7 @@ public:
     enum Prime {P434};
 
     BigInt()=default;
-    explicit BigInt(T *mag, BigInt::Prime prime = BigInt::Prime::P434)
+    constexpr explicit BigInt(T *mag, BigInt::Prime prime = BigInt::Prime::P434)
             : mag(mag), prime(prime),length(sizeof(mag)/mag[0]) {};
 
     constexpr explicit BigInt(std::string_view num, BigInt::Prime prime = BigInt::Prime::P434)
