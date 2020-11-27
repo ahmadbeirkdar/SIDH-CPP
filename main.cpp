@@ -28,6 +28,15 @@ int main() {
     for(auto i : temp1)
         std::cout << i << std::endl;
 
+    unsigned short b[3] = {1,2,3};
+    auto a = BigInt<unsigned short>(b);
+
+    std::cout << "c = 0xFFFF986709860876AAEEFF as BigInt, mag in unsigned short(16bits): " << std::endl;
+    auto c = BigInt<unsigned short>("0xFFFF986709860876AAEEFF");
+    for(auto i = 0; i < c.length; i++)
+        std::cout << c.mag[i] << std::endl;
+
+
 
     return 0;
 }
