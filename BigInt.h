@@ -23,7 +23,7 @@ public:
     explicit BigInt(T *mag, BigInt::Prime prime = BigInt::Prime::P434)
             : mag(mag), prime(prime),length(sizeof(mag)/mag[0]) {};
 
-    explicit BigInt(std::string_view num, BigInt::Prime prime = BigInt::Prime::P434)
+    constexpr explicit BigInt(std::string_view num, BigInt::Prime prime = BigInt::Prime::P434)
     : prime(prime), length(Ceil((num.length() - 2)/(2*sizeof(T))))
     {
             if(num.substr(0,2) != "0x")
