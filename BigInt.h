@@ -33,6 +33,9 @@ public:
 
     static constexpr auto P434_mag = BPrime::construct_P434<T>().mag;
 
+    // Testing P751 prime.
+    static constexpr auto P751_mag = BPrime::construct_P751<T>().mag;
+
 
 };
 
