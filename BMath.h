@@ -7,6 +7,13 @@
 #include <climits>
 #include <iostream>
 
+constexpr unsigned long Ceil(double num) {
+    auto inum = (unsigned long)num;
+
+    return inum + (((num > 0 )) ? 1 : 0);
+}
+
+
 namespace BMath {
     /**
      * Add with carry function
@@ -39,7 +46,6 @@ namespace BMath {
     template <typename T>
     inline constexpr void SUBC(T &r, T &c_o, T a, T b, T c_i){
         if(__builtin_sub_overflow(a,b,&r)){
-//            unsigned long temp = a + (ULONG_MAX - b) + 1;
             __builtin_sub_overflow(r,c_i,&r);
             c_o = 1;
         }
