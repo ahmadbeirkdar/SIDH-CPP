@@ -22,15 +22,15 @@ namespace BPrime{
             -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
             -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1
     };
-
+    // TODO: Fix construct prime, like BigInt constructor
     template <typename T, std::size_t N>
     struct construct_prime{
         constexpr explicit construct_prime(std::string_view Prime) : mag() {
-            auto it = Prime.begin();
-            std::for_each(mag.rbegin(),mag.rend(),[&it,&Prime](T &i) {
+            auto it = Prime.rbegin();
+            std::for_each(mag.begin(),mag.end(),[&it,&Prime](T &i) {
                 T ret = 0;
                 int j = 0;
-                while (it != Prime.end() && ret >= 0 && j < 2 * sizeof(T)) {
+                while (it != Prime.rend() && ret >= 0 && j < 2 * sizeof(T)) {
                     ret = (ret << 4) | hextable[*it++]; j++;
                 }
                 i = ret;

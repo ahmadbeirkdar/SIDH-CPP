@@ -71,8 +71,8 @@ public:
 
         for(auto i = 0; i < min->length; i++){
             BMath::ADDC<T>(r.mag[i],c_o,min->mag[i],max->mag[i],c_i);
+//            std::cout << r.mag[i] << " "<< max->mag[i] << " " << min->mag[i] << ((c_o == 1) ? " CARRY OUT": "  ") << ((c_i == 1) ? " CARRY IN": "  ") << std::endl; // DEBUGGING
             c_i = c_o;
-            std::cout << r.mag[i] << " "<< max->mag[i] << " " << min->mag[i] << std::endl;
         }
         for(auto i = min->length; i < max->length ; i++){
             BMath::ADDC<T>(r.mag[i],c_o,max->mag[i],0,c_i);
@@ -86,6 +86,7 @@ public:
 
     };
 
+    // Dumb and enfficent meant for debugging, will be done better
     std::string to_std_string(){
         std::stringstream ss;
         for(auto i = length - 1; i >= 0 ; i--){
@@ -109,10 +110,10 @@ public:
 
 
 
-    static constexpr auto P434_mag = BPrime::construct_prime<T,434>("0002341F271773446CFC5FD681C520567BC65C783158AEA3FDC1767AE2FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF").mag;
+    static constexpr auto P434_mag = BPrime::construct_prime<T,434>("2341F271773446CFC5FD681C520567BC65C783158AEA3FDC1767AE2FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF").mag;
 
     // Testing P751 prime.
-    static constexpr auto P751_mag = BPrime::construct_prime<T,751>("00006FE5D541F71C0E12909F97BADC668562B5045CB25748084E9867D6EBE876DA959B1A13F7CC76E3EC968549F878A8EEAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF").mag;
+    static constexpr auto P751_mag = BPrime::construct_prime<T,751>("6FE5D541F71C0E12909F97BADC668562B5045CB25748084E9867D6EBE876DA959B1A13F7CC76E3EC968549F878A8EEAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF").mag;
 
 
 
