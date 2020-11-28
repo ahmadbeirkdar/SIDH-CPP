@@ -26,8 +26,10 @@ namespace BMath {
      */
     template <typename T>
     inline constexpr void ADDC(T &r, T &c_o, T a, T b, T c_i){
-        if(__builtin_add_overflow(a,b,&r) || __builtin_add_overflow(a+b,c_i,&r))
+        if(__builtin_add_overflow(a,b,&r) || __builtin_add_overflow(a+b,c_i,&r)){
+            __builtin_add_overflow(a+b,c_i,&r);
             c_o = 1;
+        }
         else{
             r = a + b + c_i;
             c_o = 0;
