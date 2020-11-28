@@ -29,12 +29,21 @@ public:
             if(num.substr(0,2) != "0x")
                 throw std::runtime_error("BigInt: Invalid number, number must be in base 16 and starting with 0x");
             mag = new T[length];
-            auto it = num.begin() +2;
+            auto it = num.rbegin();
             for(auto i = 0; i < length; i++){
                 T ret = 0;
                 int j = 0;
-                while (it != num.end() && ret >= 0 && j < 2 * sizeof(T)) {
-                    ret = (ret << 4) | BPrime::hextable[*it++]; j++;
+                std::string temp;
+                while(*it != 'x' && j < 2*sizeof(T)){
+                    temp += *it++;
+                    j++;
+                }
+
+                std::reverse(temp.begin(),temp.end());
+                auto it2 = temp.begin();
+                j = 0;
+                while (it2 != temp.end() && ret >= 0 && j < 2 * sizeof(T)) {
+                    ret = (ret << 4) | BPrime::hextable[*it2++]; j++;
                 }
                 mag[i] = ret;
             }
