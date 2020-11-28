@@ -86,6 +86,21 @@ public:
 
     };
 
+    std::string to_std_string(){
+        std::stringstream ss;
+        for(auto i = length - 1; i >= 0 ; i--){
+            std::stringstream temp;
+            std::string zeros;
+            temp << std::hex << mag[i];
+            while(temp.str().length() + zeros.length() != 2*sizeof(T))
+                zeros += '0';
+            ss << zeros + temp.str();
+        }
+        std::string temp = ss.str();
+        std::for_each(temp.begin(),temp.end(),[](char &i){i = std::toupper(i);});
+        return "0x" + temp;
+    }
+
 
 public:
     T *mag;
