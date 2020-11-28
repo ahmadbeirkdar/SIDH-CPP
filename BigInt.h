@@ -40,7 +40,42 @@ public:
             }
     };
 
-    void add_schoolbook(BigInt& r,BigInt& a, BigInt &c);
+    void add_schoolbook(BigInt& r,BigInt& a, BigInt &b){
+        if (a.prime != b.prime != r.prime)
+            throw std::runtime_error("BigInt: To use the add_schoolbook method, both BigInts must have the same prime.");
+
+        T c_i = 0;
+        T c_o = 0;
+        BigInt<T>* min = (a.length < b.length) ? &a : &b;
+        BigInt<T>* max = (a.length < b.length) ? &b : &a;
+
+        if(min->length == 0){
+            r.length = max->length;
+            r.mag = new T[r.length];
+            for(auto i = 0; i < r.length; i++)
+                r.mag[i] = max->mag[i];
+            return;
+        }
+
+        r.length = max->length;
+        r.mag = new T[max->length + 1];
+
+        for(auto i = 0; i < min->length; i++){
+            BMath::ADDC<T>(r.mag[i],c_o,min->mag[i],max->mag[i],c_i);
+            c_i = c_o;
+            std::cout << r.mag[i] << " "<< max->mag[i] << " " << min->mag[i] << std::endl;
+        }
+        for(auto i = min->length; i < max->length ; i++){
+            BMath::ADDC<T>(r.mag[i],c_o,max->mag[i],0,c_i);
+            c_i = c_o;
+        }
+
+        if(c_i == 1) {
+            r.length++;
+            BMath::ADDC<T>(r.mag[r.length-1],c_o,0,0,c_i);
+        }
+
+    };
 
 
 public:
