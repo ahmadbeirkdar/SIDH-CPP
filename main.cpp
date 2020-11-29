@@ -46,21 +46,21 @@ int main() {
     auto r1 = BigInt<unsigned short>();
     a1.add_schoolbook(r1,a1,b1);
     std::cout << r1.to_std_string() << std::endl;
-    assert(r1.to_std_string() == "0x01FFFF30CE130C10ED55DDFE");
+    assert(r1.to_std_string() == "0x1FFFF30CE130C10ED55DDFE");
 
     auto a2 = BigInt<unsigned short>("0x169b7d3ca093c49cf7aa56ff7eab415da876290f11d96f95f90b08aa8681a8be24498eacc6c404396a532");
     auto b2 = BigInt<unsigned short>("0x13b31781aac37da039fbe8fcfc58b29f727a93342cd758a83b069636287ce74ee10c13a90a20e5278f0e4");
     auto r2 = BigInt<unsigned short>();
     a2.add_schoolbook(r2,a2,b2);
     std::cout << r2.to_std_string() << std::endl;
-    assert(r2.to_std_string() == "0x0002A4E94BE4B57423D31A63FFC7B03F3FD1AF0BC433EB0C83E34119EE0AEFE900D0555A255D0E4E960F9616");
+    assert(r2.to_std_string() == "0x2A4E94BE4B57423D31A63FFC7B03F3FD1AF0BC433EB0C83E34119EE0AEFE900D0555A255D0E4E960F9616");
 
     auto a3 = BigInt<unsigned short>("0x169b7d3ca093c49cf7aa56ff7eab415da876290f11d96f95f90b08aa8681a8be24498eacc6c404396a532");
     auto b3 = BigInt<unsigned short>("0x13b31781aac37da039fbe8fcfc58b29f727a93342cd758a83b069636287ce74ee1");
     auto r3 = BigInt<unsigned short>();
     a3.add_schoolbook(r3,a3,b3);
     std::cout << r3.to_std_string() << std::endl;
-    assert(r3.to_std_string() == "0x000169B7D3CA093C49CF7AB9230F6C5ED958279C8CDA1A9352123023053B9C47633AECD3F162A268C07DF413");
+    assert(r3.to_std_string() == "0x169B7D3CA093C49CF7AB9230F6C5ED958279C8CDA1A9352123023053B9C47633AECD3F162A268C07DF413");
 
     return 0;
 }

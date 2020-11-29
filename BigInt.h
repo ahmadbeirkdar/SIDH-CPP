@@ -93,7 +93,7 @@ public:
             std::stringstream temp;
             std::string zeros;
             temp << std::hex << mag[i];
-            while(temp.str().length() + zeros.length() != 2*sizeof(T))
+            while(temp.str().length() + zeros.length() != 2*sizeof(T) && i != length - 1)
                 zeros += '0';
             ss << zeros + temp.str();
         }
