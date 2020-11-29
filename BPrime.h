@@ -27,9 +27,8 @@ namespace BPrime{
         constexpr explicit construct_prime(std::string_view Prime) : mag() {
             auto it = Prime.rbegin();
             auto it2 = Prime.rbegin();
-            auto it3 = Prime.rbegin();
             bool flag = false;
-            std::for_each(mag.begin(),mag.end(),[&it,&it2,&it3,&flag,&Prime](T &i) {
+            std::for_each(mag.begin(),mag.end(),[&it,&it2,&flag,&Prime](T &i) {
                 T ret = 0;
                 int j = 0;
                 it = it2;
