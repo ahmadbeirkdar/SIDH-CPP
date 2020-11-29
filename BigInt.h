@@ -102,11 +102,17 @@ public:
         return "0x" + temp;
     }
 
+    BigInt<T> operator+(BigInt<T> &b){
+        BigInt<T> r;
+        add_schoolbook(r,*this,b);
+        return r;
+    }
+
 
 public:
     T *mag;
     int length{};
-    Prime prime;
+    Prime prime = BigInt::Prime::P434;
 
 
 

@@ -58,7 +58,7 @@ int main() {
     auto a3 = BigInt<unsigned short>("0x169b7d3ca093c49cf7aa56ff7eab415da876290f11d96f95f90b08aa8681a8be24498eacc6c404396a532");
     auto b3 = BigInt<unsigned short>("0x13b31781aac37da039fbe8fcfc58b29f727a93342cd758a83b069636287ce74ee1");
     auto r3 = BigInt<unsigned short>();
-    a3.add_schoolbook(r3,a3,b3);
+    r3 = a3 + b3;
     std::cout << r3.to_std_string() << std::endl;
     assert(r3.to_std_string() == "0x169B7D3CA093C49CF7AB9230F6C5ED958279C8CDA1A9352123023053B9C47633AECD3F162A268C07DF413");
 
