@@ -8,4 +8,16 @@ Plan: A SIDH library implementation in C++ that is fully modular. Also to allow 
 
 Tested with Clang 11.
 
+Currently working on:
+
+BigInt:
+* Compile time primes, based on BigInt template type  - Done
+* Addition - Done
+* Subtraction
+* Modular arithmetic
+* Multiplication
+* constexpr everything possible ;p
+
+Steady progress is all I got to promise. Tight schedule, university, and work. 
+ 
 Contributors are welcome. 
