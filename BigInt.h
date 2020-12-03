@@ -109,6 +109,16 @@ public:
         return r;
     }
 
+    BigInt<T> operator>(BigInt<T> &b){
+        if(this->length != b.length)
+            return this->length > b.length;
+
+        for(auto i = length - 1; i >= 0; i--)
+            if(this->mag[i] != b->mag[i])
+                return this->mag[i] > b->mag[i];
+
+    }
+
 
 public:
     T *mag;
