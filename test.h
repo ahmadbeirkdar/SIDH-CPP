@@ -33,9 +33,9 @@ void objectBenchmark(){
     int i = 0;
     auto t1 = std::chrono::high_resolution_clock::now();
     for(auto &o : outputs){
-        auto a = BigInt<unsigned int>(inputs.at(i++));
-        auto b = BigInt<unsigned int>(inputs.at(i++));
-        auto r = BigInt<unsigned int>();
+        auto a = BigInt<u_int64_t>(inputs.at(i++));
+        auto b = BigInt<u_int64_t>(inputs.at(i++));
+        auto r = BigInt<u_int64_t>();
     }
     auto t2 = std::chrono::high_resolution_clock::now();
 
@@ -80,9 +80,9 @@ void addTests(){
     int i = 0;
     auto t1 = std::chrono::high_resolution_clock::now();
     for(auto &o : outputs){
-        auto a = BigInt<unsigned int>(inputs.at(i++));
-        auto b = BigInt<unsigned int>(inputs.at(i++));
-        auto r = BigInt<unsigned int>();
+        auto a = BigInt<u_int64_t>(inputs.at(i++));
+        auto b = BigInt<u_int64_t>(inputs.at(i++));
+        auto r = BigInt<u_int64_t>();
         r = a + b;
         assert(o == r.to_std_string());
     }
