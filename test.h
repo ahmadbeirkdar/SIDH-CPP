@@ -2,8 +2,70 @@
 // Created by Ahmad Beirkdar on 2020-12-02.
 //
 #include <iostream>
+#include <fstream>
+#include <vector>
+#include <chrono>
+#include <cassert>
+#include <gmp.h>
+#include <gmpxx.h>
 #include "BigInt.h"
 #include "BMath.h"
+
+void addTests(){
+    std::vector<std::string> inputs;
+    std::vector<std::string> outputs;
+
+    std::ifstream file("../tests/add_inputs.txt");
+
+    if(file.is_open()){
+        std::string line;
+        while(std::getline(file,line))
+            inputs.push_back(line);
+        file.close();
+    }
+    std::ifstream file2("../tests/add_result.txt");
+    if(file2.is_open()){
+        std::string line;
+        while(std::getline(file2,line))
+            outputs.push_back(line);
+        file.close();
+    }
+    int i = 0;
+    auto t1 = std::chrono::high_resolution_clock::now();
+    for(auto &o : outputs){
+        auto a = BigInt<unsigned int>(inputs.at(i++));
+        auto b = BigInt<unsigned int>(inputs.at(i++));
+        auto r = BigInt<unsigned int>();
+        r = a + b;
+        assert(o == r.to_std_string());
+    }
+    auto t2 = std::chrono::high_resolution_clock::now();
+
+    std::cout << "Addition tests passed, tested " << outputs.size() << " in " << "ms" << std::endl;
+
+    auto time1 = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
+
+    std::for_each(outputs.begin(),outputs.end(),[](std::string &data){
+        std::for_each(data.begin(), data.end(), [](char & c){
+            c = ::tolower(c);
+        });
+    });
+
+    i = 0;
+    t1 = std::chrono::high_resolution_clock::now();
+    for(auto &o : outputs){
+        auto a = mpz_class(inputs.at(i++).substr(2),16);
+        auto b = mpz_class(inputs.at(i++).substr(2),16);
+        auto r = mpz_class();
+        r = a + b;
+        assert(o.substr(2) == r.get_str(16));
+    }
+    t2 = std::chrono::high_resolution_clock::now();
+
+    std::cout << "          GMP is " << time1/std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count() << "x faster" << std::endl;
+    std::cout << "          This took " << time1 << " ms and GMP took " << std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count() << " ms" << std::endl;
+
+}
 
 void customTests(){
     std::cout << "Hello, World!" << std::endl;

@@ -2,6 +2,7 @@
 
 int main() {
 
-    customTests();
+    addTests();
+//    customTests();
     return 0;
 }
