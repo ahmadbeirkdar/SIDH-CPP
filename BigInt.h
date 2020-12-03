@@ -50,8 +50,9 @@ public:
     };
 
     void add_schoolbook(BigInt& r,BigInt& a, BigInt &b){
-        if (a.prime != b.prime != r.prime)
-            throw std::runtime_error("BigInt: To use the add_schoolbook method, both BigInts must have the same prime.");
+        // No need to check prime, because it is not meant to be for modular arithmetic, rather just a test implementation of
+//        if (a.prime != b.prime != r.prime)
+//            throw std::runtime_error("BigInt: To use the add_schoolbook method, both BigInts must have the same prime.");
 
         T c_i = 0;
         T c_o = 0;
