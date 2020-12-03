@@ -11,6 +11,53 @@
 #include "BigInt.h"
 #include "BMath.h"
 
+void objectBenchmark(){
+    std::vector<std::string> inputs;
+    std::vector<std::string> outputs;
+
+    std::ifstream file("../tests/add_inputs.txt");
+
+    if(file.is_open()){
+        std::string line;
+        while(std::getline(file,line))
+            inputs.push_back(line);
+        file.close();
+    }
+    std::ifstream file2("../tests/add_result.txt");
+    if(file2.is_open()){
+        std::string line;
+        while(std::getline(file2,line))
+            outputs.push_back(line);
+        file.close();
+    }
+    int i = 0;
+    auto t1 = std::chrono::high_resolution_clock::now();
+    for(auto &o : outputs){
+        auto a = BigInt<unsigned int>(inputs.at(i++));
+        auto b = BigInt<unsigned int>(inputs.at(i++));
+        auto r = BigInt<unsigned int>();
+    }
+    auto t2 = std::chrono::high_resolution_clock::now();
+
+    std::cout << "BigInt constructor tested " << 3*outputs.size() << std::endl;
+
+    auto time1 = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
+
+
+    i = 0;
+    t1 = std::chrono::high_resolution_clock::now();
+    for(auto &o : outputs){
+        auto a = mpz_class(inputs.at(i++).substr(2),16);
+        auto b = mpz_class(inputs.at(i++).substr(2),16);
+        auto r = mpz_class();
+    }
+    t2 = std::chrono::high_resolution_clock::now();
+
+    std::cout << "          This is " << std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count()/static_cast<double>(time1) << "x faster" << std::endl;
+    std::cout << "          This took " << time1 << " ms and GMP took " << std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count() << " ms" << std::endl;
+
+}
+
 void addTests(){
     std::vector<std::string> inputs;
     std::vector<std::string> outputs;
@@ -41,7 +88,7 @@ void addTests(){
     }
     auto t2 = std::chrono::high_resolution_clock::now();
 
-    std::cout << "Addition tests passed, tested " << outputs.size() << " in " << "ms" << std::endl;
+    std::cout << "Addition tests passed, tested " << outputs.size() << std::endl;
 
     auto time1 = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
 
@@ -62,7 +109,7 @@ void addTests(){
     }
     t2 = std::chrono::high_resolution_clock::now();
 
-    std::cout << "          GMP is " << time1/std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count() << "x faster" << std::endl;
+    std::cout << "          This is " << std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count()/static_cast<double>(time1) << "x faster" << std::endl;
     std::cout << "          This took " << time1 << " ms and GMP took " << std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count() << " ms" << std::endl;
 
 }

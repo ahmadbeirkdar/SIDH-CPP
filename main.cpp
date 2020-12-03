@@ -2,6 +2,7 @@
 
 int main() {
 
+    objectBenchmark();
     addTests();
 //    customTests();
     return 0;
