@@ -32,16 +32,17 @@ void objectBenchmark(){
     }
     int i = 0;
     auto t1 = std::chrono::high_resolution_clock::now();
+    auto t2 = std::chrono::high_resolution_clock::now();
+    t1 = std::chrono::high_resolution_clock::now();
     for(auto &o : outputs){
         auto a = BigInt<u_int64_t>(inputs.at(i++));
         auto b = BigInt<u_int64_t>(inputs.at(i++));
         auto r = BigInt<u_int64_t>();
     }
-    auto t2 = std::chrono::high_resolution_clock::now();
+    t2 = std::chrono::high_resolution_clock::now();
+    auto time1 = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
 
     std::cout << "BigInt constructor tested " << 3*outputs.size() << std::endl;
-
-    auto time1 = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
 
 
     i = 0;

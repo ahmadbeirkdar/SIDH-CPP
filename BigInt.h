@@ -22,7 +22,6 @@ public:
     constexpr explicit BigInt(T *mag, BigInt::Prime prime = BigInt::Prime::P434)
             : mag(mag), prime(prime),length(sizeof(mag)/mag[0]) {};
 
-    // EX:  0x169b7 d3ca093c49cf7aa5 6ff7eab415da8762 90f11d96f95f90b0 8aa8681a8be24498 eacc6c404396a532
     explicit BigInt(std::string_view num, BigInt::Prime prime = BigInt::Prime::P434)
     : prime(prime), length(std::ceil((num.length() - 2.0)/(2.0*sizeof(T))))
     {
