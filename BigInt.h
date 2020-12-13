@@ -10,8 +10,7 @@
 #include <string>
 #include "BMath.h"
 #include "BPrime.h"
-
-
+#include <cmath>
 
 template <typename T>
 class BigInt {
@@ -23,29 +22,28 @@ public:
     constexpr explicit BigInt(T *mag, BigInt::Prime prime = BigInt::Prime::P434)
             : mag(mag), prime(prime),length(sizeof(mag)/mag[0]) {};
 
+    // EX:  0x169b7 d3ca093c49cf7aa5 6ff7eab415da8762 90f11d96f95f90b0 8aa8681a8be24498 eacc6c404396a532
     explicit BigInt(std::string_view num, BigInt::Prime prime = BigInt::Prime::P434)
-    : prime(prime), length(Ceil((num.length() - 2)/(2*sizeof(T))))
+    : prime(prime), length(std::ceil((num.length() - 2.0)/(2.0*sizeof(T))))
     {
-            if(num.substr(0,2) != "0x")
-                throw std::runtime_error("BigInt: Invalid number, number must be in base 16 and starting with 0x");
+//            if(num.substr(0,2) != "0x")
+//                throw std::runtime_error("BigInt: Invalid number, number must be in base 16 and starting with 0x");
             mag = new T[length];
-            auto it = num.rbegin();
-            for(auto i = 0; i < length; i++){
-                T ret = 0;
-                int j = 0;
-                std::string temp;
-                while(*it != 'x' && j < 2*sizeof(T)){
-                    temp += *it++;
+            int firstL = (num.length() - 2)%(2*sizeof(T));
+            auto it = num.begin() + 2;
+            int j = 0;
+            T r = 0;
+            for(auto i = length - 1; i >= 0 ;i--){
+                r = 0;
+                j = 0;
+
+                while (it != num.end() && r >= 0 && j < firstL) {
+                    r = (r << 4) | BPrime::hextable[*it++];
                     j++;
                 }
+                mag[i] = r;
+                firstL = 2*sizeof(T);
 
-                std::reverse(temp.begin(),temp.end());
-                auto it2 = temp.begin();
-                j = 0;
-                while (it2 != temp.end() && ret >= 0 && j < 2 * sizeof(T)) {
-                    ret = (ret << 4) | BPrime::hextable[*it2++]; j++;
-                }
-                mag[i] = ret;
             }
     };
 
