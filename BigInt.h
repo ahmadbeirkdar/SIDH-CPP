@@ -96,7 +96,7 @@ public:
             ss << zeros + temp.str();
         }
         std::string temp = ss.str();
-        std::for_each(temp.begin(),temp.end(),[](char &i){i = std::toupper(i);});
+        std::transform(temp.begin(),temp.end(),temp.begin(),::toupper);
         return "0x" + temp;
     }
 
