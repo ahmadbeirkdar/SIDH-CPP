@@ -55,7 +55,7 @@ void objectBenchmark(){
     t2 = std::chrono::high_resolution_clock::now();
 
     std::cout << "          This is " << std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count()/static_cast<double>(time1) << "x faster" << std::endl;
-    std::cout << "          This took " << time1 << " ms and GMP took " << std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count() << " ms" << std::endl;
+    std::cout << "          This took " << time1 << " µs and GMP took " << std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count() << " µs" << std::endl;
 
 }
 
@@ -111,7 +111,7 @@ void addTests(){
     t2 = std::chrono::high_resolution_clock::now();
 
     std::cout << "          This is " << std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count()/static_cast<double>(time1) << "x faster" << std::endl;
-    std::cout << "          This took " << time1 << " ms and GMP took " << std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count() << " ms" << std::endl;
+    std::cout << "          This took " << time1 << " µs and GMP took " << std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count() << " µs" << std::endl;
 
 }
 
