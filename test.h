@@ -88,10 +88,52 @@ void addTests(){
         assert(o == r.to_std_string());
     }
     auto t2 = std::chrono::high_resolution_clock::now();
+    auto time1 = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
+
+    // Test all unsigned types:
+    // 32 bit
+    i = 0;
+    for(auto &o : outputs){
+        auto a = BigInt<u_int32_t>(inputs.at(i++));
+        auto b = BigInt<u_int32_t>(inputs.at(i++));
+        auto r = BigInt<u_int32_t>();
+        r = a + b;
+        assert(o == r.to_std_string());
+    }
+
+    // 16 bit
+    i = 0;
+    for(auto &o : outputs){
+        auto a = BigInt<u_int16_t>(inputs.at(i++));
+        auto b = BigInt<u_int16_t>(inputs.at(i++));
+        auto r = BigInt<u_int16_t>();
+        r = a + b;
+        assert(o == r.to_std_string());
+    }
+
+    // 8 bit
+    i = 0;
+    for(auto &o : outputs){
+        auto a = BigInt<u_int8_t>(inputs.at(i++));
+        auto b = BigInt<u_int8_t>(inputs.at(i++));
+        auto r = BigInt<u_int8_t>();
+        r = a + b;
+        assert(o == r.to_std_string());
+    }
+
+    // 128 bit CLANG ONLY
+#if __clang__
+    i = 0;
+    for(auto &o : outputs){
+        auto a = BigInt<__uint128_t>(inputs.at(i++));
+        auto b = BigInt<__uint128_t>(inputs.at(i++));
+        auto r = BigInt<__uint128_t>();
+        r = a + b;
+        assert(o == r.to_std_string());
+    }
+#endif
 
     std::cout << "Addition tests passed, tested " << outputs.size() << std::endl;
-
-    auto time1 = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
 
     std::for_each(outputs.begin(),outputs.end(),[](std::string &data){
         std::for_each(data.begin(), data.end(), [](char & c){
