@@ -38,7 +38,7 @@ public:
                 j = 0;
 
                 while (it != num.end() && r >= 0 && j < firstL) {
-                    r = (r << 4) | BPrime::hextable[*it++];
+                    r = (r << 4) | BMath::hextable[*it++];
                     j++;
                 }
 
