@@ -121,19 +121,6 @@ void addTests(){
         assert(o == r.to_std_string());
     }
 
-    // 128 bit CLANG ONLY
-#if __clang__
-    i = 0;
-    for(auto &o : outputs){
-        auto a = BigInt<__uint128_t>(inputs.at(i++));
-        auto b = BigInt<__uint128_t>(inputs.at(i++));
-        auto r = BigInt<__uint128_t>();
-        r = a + b;
-        assert(o == r.to_std_string());
-    }
-#endif
-
-    std::cout << "Addition tests passed, tested " << outputs.size() << std::endl;
 
     std::for_each(outputs.begin(),outputs.end(),[](std::string &data){
         std::for_each(data.begin(), data.end(), [](char & c){
@@ -152,9 +139,57 @@ void addTests(){
     }
     t2 = std::chrono::high_resolution_clock::now();
 
+    std::cout << "Addition tests passed, tested " << outputs.size() << std::endl;
     std::cout << "          This is " << std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count()/static_cast<double>(time1) << "x faster" << std::endl;
     std::cout << "          This took " << time1 << " µs and GMP took " << std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count() << " µs" << std::endl;
 
+}
+
+template <typename T, std::size_t N>
+std::string to_std_string(std::array<T,N> mag){
+    std::stringstream ss;
+    for(auto i = mag.rbegin(); i != mag.rend() ; i++){
+        std::stringstream temp;
+        std::string zeros;
+        temp << std::hex << +(*i);
+        while(temp.str().length() + zeros.length() != 2*sizeof(T) && i != mag.rbegin())
+            zeros += '0';
+        ss << zeros + temp.str();
+    }
+    std::string temp = ss.str();
+    std::transform(temp.begin(),temp.end(),temp.begin(),::toupper);
+
+    auto it = temp.begin();
+    while(it != temp.end()){
+        if(*it == '0')
+            temp.erase(it);
+        else
+            break;
+    }
+
+    return "0x" + temp;
+}
+void primeConstructorTest(){
+
+    constexpr auto P434_64 = BigInt<unsigned long>::P434_mag;
+    constexpr auto P751_64 = BigInt<__uint64_t>::P751_mag;
+    constexpr auto P434_32 = BigInt<__uint32_t>::P434_mag;
+    constexpr auto P751_32 = BigInt<__uint32_t>::P751_mag;
+    constexpr auto P434_16 = BigInt<__uint16_t>::P434_mag;
+    constexpr auto P751_16 = BigInt<__uint16_t>::P751_mag;
+    constexpr auto P434_8 = BigInt<unsigned char>::P434_mag;
+    constexpr auto P751_8 = BigInt<__uint8_t>::P751_mag;
+
+    assert(to_std_string(P434_64) == "0x2341F271773446CFC5FD681C520567BC65C783158AEA3FDC1767AE2FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+    assert(to_std_string(P751_64) == "0x6FE5D541F71C0E12909F97BADC668562B5045CB25748084E9867D6EBE876DA959B1A13F7CC76E3EC968549F878A8EEAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+    assert(to_std_string(P434_32) == "0x2341F271773446CFC5FD681C520567BC65C783158AEA3FDC1767AE2FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+    assert(to_std_string(P751_32) == "0x6FE5D541F71C0E12909F97BADC668562B5045CB25748084E9867D6EBE876DA959B1A13F7CC76E3EC968549F878A8EEAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+    assert(to_std_string(P434_16) == "0x2341F271773446CFC5FD681C520567BC65C783158AEA3FDC1767AE2FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+    assert(to_std_string(P751_16) == "0x6FE5D541F71C0E12909F97BADC668562B5045CB25748084E9867D6EBE876DA959B1A13F7CC76E3EC968549F878A8EEAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+    assert(to_std_string(P434_8) == "0x2341F271773446CFC5FD681C520567BC65C783158AEA3FDC1767AE2FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+    assert(to_std_string(P751_8) == "0x6FE5D541F71C0E12909F97BADC668562B5045CB25748084E9867D6EBE876DA959B1A13F7CC76E3EC968549F878A8EEAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+
+    std::cout << "Prime constructor tests passed\n" << std::endl;
 }
 
 void customTests(){
