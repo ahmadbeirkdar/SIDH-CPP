@@ -28,7 +28,7 @@ public:
 //            if(num.substr(0,2) != "0x")
 //                throw std::runtime_error("BigInt: Invalid number, number must be in base 16 and starting with 0x");
             mag = new T[length];
-            int firstL = (num.length() - 2)%(2*sizeof(T));
+            int firstL = (num.length() - 2)%(2*sizeof(T)) == 0 ? 2*sizeof(T) :  (num.length() - 2)%(2*sizeof(T));
             auto it = num.begin() + 2;
             int j = 0;
             T r = 0;
@@ -90,13 +90,22 @@ public:
         for(auto i = length - 1; i >= 0 ; i--){
             std::stringstream temp;
             std::string zeros;
-            temp << std::hex << mag[i];
+            temp << std::hex << +mag[i]; // Integral promotion in case it is a u8
             while(temp.str().length() + zeros.length() != 2*sizeof(T) && i != length - 1)
                 zeros += '0';
             ss << zeros + temp.str();
         }
         std::string temp = ss.str();
         std::transform(temp.begin(),temp.end(),temp.begin(),::toupper);
+
+        auto it = temp.begin();
+        while(it != temp.end()){
+            if(*it == '0')
+                temp.erase(it);
+            else
+                break;
+        }
+
         return "0x" + temp;
     }
 
