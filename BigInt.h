@@ -29,9 +29,10 @@ public:
 //                throw std::runtime_error("BigInt: Invalid number, number must be in base 16 and starting with 0x");
             mag = new T[length];
             int firstL = (num.length() - 2)%(2*sizeof(T)) == 0 ? 2*sizeof(T) :  (num.length() - 2)%(2*sizeof(T));
-            auto it = num.begin() + 2;
-            int j = 0;
-            T r = 0;
+            auto it = num.begin();
+            std::advance(it,2); // Assuming the base 16 number as a string given starts 0x
+            int j;
+            T r;
             for(auto i = length - 1; i >= 0 ;i--){
                 r = 0;
                 j = 0;
@@ -40,9 +41,9 @@ public:
                     r = (r << 4) | BPrime::hextable[*it++];
                     j++;
                 }
+
                 mag[i] = r;
                 firstL = 2*sizeof(T);
-
             }
     };
 
