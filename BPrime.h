@@ -25,31 +25,21 @@ namespace BPrime{
     template <typename T, std::size_t N>
     struct construct_prime{
         constexpr explicit construct_prime(std::string_view Prime) : mag() {
-            auto it = Prime.rbegin();
-            auto it2 = Prime.rbegin();
-            bool flag = false;
-            std::for_each(mag.begin(),mag.end(),[&it,&it2,&flag,&Prime](T &i) {
-                T ret = 0;
+            int firstL = (Prime.length() - 2)%(2*sizeof(T)) == 0 ? 2*sizeof(T) :  (Prime.length() - 2)%(2*sizeof(T));
+            auto it = Prime.begin();
+            std::advance(it,2); // Assuming the base 16 number as a string given starts 0x
+
+            std::for_each(mag.rbegin(),mag.rend(),[&it,&Prime,&firstL](T &i) {
                 int j = 0;
-                it = it2;
-                while(it < Prime.rend() && j < (2*sizeof(T))){
-                    if(flag || j > 0)
-                        it++;
+                T r = 0;
+
+                while (it != Prime.end() && r >= 0 && j < firstL) {
+                    r = (r << 4) | BPrime::hextable[*it++];
                     j++;
                 }
-                j = 2*sizeof(T) - std::distance(it2,it) - ((!flag) ? 1 : 0);
-                if(it == Prime.rend()){
-                    int k = 0;
-                    while(it!=Prime.rbegin() && k != 1){
-                        it--; k++; j++;
-                    }
-                }
-                it2 = it;
-                flag = true;
-                while (it != Prime.rend() && ret >= 0 && j < 2 * sizeof(T)) {
-                    ret = (ret << 4) | hextable[*it];it--; j++;
-                }
-                i = ret;
+
+                i = r;
+                firstL = 2*sizeof(T);
             });
         }
 
