@@ -15,6 +15,9 @@
 template <typename T>
 class BigInt {
 
+    static_assert(std::is_unsigned<T>::value, "BigInt template parameter must be unsigned.");
+    static_assert(std::is_integral<T>::value, "BigInt template parameter must be integral.");
+
 public:
     enum Prime {P434};
 
