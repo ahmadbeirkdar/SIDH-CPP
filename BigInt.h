@@ -10,6 +10,7 @@
 #include <string>
 #include "BMath.h"
 #include "BPrime.h"
+#include "DTS.h"
 #include <cmath>
 
 template <typename T>
@@ -31,7 +32,8 @@ public:
 //            if(num.substr(0,2) != "0x")
 //                throw std::runtime_error("BigInt: Invalid number, number must be in base 16 and starting with 0x");
 //            mag = std::make_unique_for_overwrite<T[]>(length);
-            mag = new T[length];
+//            mag = new T[length];
+            mag = DTS::make_unique_for_overwrite<T[]>(length);
             int firstL = (num.length() - 2)%(2*sizeof(T)) == 0 ? 2*sizeof(T) :  (num.length() - 2)%(2*sizeof(T));
             auto it = num.begin();
             std::advance(it,2); // Assuming the base 16 number as a string given starts 0x
@@ -63,16 +65,16 @@ public:
 
         if(min->length == 0){
             r.length = max->length;
-//            r.mag = std::make_unique_for_overwrite<T[]>(r.length);
-            r.mag = new T[r.length];
+            r.mag = DTS::make_unique_for_overwrite<T[]>(r.length);
+//            r.mag = new T[r.length];
             for(auto i = 0; i < r.length; i++)
                 r.mag[i] = max->mag[i];
             return;
         }
 
         r.length = max->length;
-//        r.mag = std::make_unique_for_overwrite<T[]>(r.length + 1);
-        r.mag = new T[r.length + 1];
+        r.mag = DTS::make_unique_for_overwrite<T[]>(r.length + 1);
+//        r.mag = new T[r.length + 1];
         for(auto i = 0; i < min->length; i++){
             BMath::ADDC<T>(r.mag[i],c_o,min->mag[i],max->mag[i],c_i);
 //            std::cout << r.mag[i] << " "<< max->mag[i] << " " << min->mag[i] << ((c_o == 1) ? " CARRY OUT": "  ") << ((c_i == 1) ? " CARRY IN": "  ") << std::endl; // DEBUGGING
@@ -133,8 +135,8 @@ public:
 
 
 public:
-//    std::unique_ptr<T[]> mag; Use this when libc++ has implemented std::make_unique_for_overwrite
-    T *mag;
+    std::unique_ptr<T[]> mag; //Use this when libc++ has implemented std::make_unique_for_overwrite
+//    T *mag;
     int length{};
     Prime prime = BigInt::Prime::P434;
 

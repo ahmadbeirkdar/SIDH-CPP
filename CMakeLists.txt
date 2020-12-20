@@ -9,7 +9,7 @@ include_directories("/usr/local/include")
 
 
 
-add_executable(SIDH_CPP main.cpp BigInt.h BMath.h BPrime.h test.h)
+add_executable(SIDH_CPP main.cpp BigInt.h BMath.h BPrime.h test.h DTS.h)
 
 set(GMP_DIR "/usr/local/Cellar/gmp/6.2.1")
 include_directories(${PROJECT_NAME} ${GMP_DIR}/include)
