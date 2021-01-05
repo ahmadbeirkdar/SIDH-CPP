@@ -141,6 +141,88 @@ void addTests(){
 
 }
 
+void subTests(){
+    std::vector<std::string> inputs;
+    std::vector<std::string> outputs;
+
+    std::ifstream file("../tests/sub_inputs.txt");
+
+    if(file.is_open()){
+        std::string line;
+        while(std::getline(file,line))
+            inputs.push_back(line);
+        file.close();
+    }
+    std::ifstream file2("../tests/sub_result.txt");
+    if(file2.is_open()){
+        std::string line;
+        while(std::getline(file2,line))
+            outputs.push_back(line);
+        file.close();
+    }
+    int i = 0;
+    auto t1 = std::chrono::high_resolution_clock::now();
+    for(auto &o : outputs){
+        auto a = BigInt<u_int64_t>(inputs.at(i++));
+        auto b = BigInt<u_int64_t>(inputs.at(i++));
+        auto r = a - b;
+        assert(o == r.to_std_string());
+    }
+    auto t2 = std::chrono::high_resolution_clock::now();
+    auto time1 = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
+
+    // Test all unsigned types:
+    // 32 bit
+    i = 0;
+    for(auto &o : outputs){
+        auto a = BigInt<u_int32_t>(inputs.at(i++));
+        auto b = BigInt<u_int32_t>(inputs.at(i++));
+        auto r = a - b;
+        assert(o == r.to_std_string());
+    }
+
+    // 16 bit
+    i = 0;
+    for(auto &o : outputs){
+        auto a = BigInt<u_int16_t>(inputs.at(i++));
+        auto b = BigInt<u_int16_t>(inputs.at(i++));
+        auto r = a - b;
+        assert(o == r.to_std_string());
+    }
+
+    // 8 bit
+    i = 0;
+    for(auto &o : outputs){
+        auto a = BigInt<u_int8_t>(inputs.at(i++));
+        auto b = BigInt<u_int8_t>(inputs.at(i++));
+        auto r = a - b;
+        assert(o == r.to_std_string());
+    }
+
+
+    std::for_each(outputs.begin(),outputs.end(),[](std::string &data){
+        std::for_each(data.begin(), data.end(), [](char & c){
+            c = ::tolower(c);
+        });
+    });
+
+    i = 0;
+    t1 = std::chrono::high_resolution_clock::now();
+    for(auto &o : outputs){
+        auto a = mpz_class(inputs.at(i++).substr(2),16);
+        auto b = mpz_class(inputs.at(i++).substr(2),16);
+        auto r = mpz_class();
+        r = a - b;
+        assert(o.substr(2) == r.get_str(16));
+    }
+    t2 = std::chrono::high_resolution_clock::now();
+
+    std::cout << "Sub tests passed, tested " << outputs.size() << std::endl;
+    std::cout << "          This is " << std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count()/static_cast<double>(time1) << "x faster" << std::endl;
+    std::cout << "          This took " << time1 << " µs and GMP took " << std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count() << " µs" << std::endl;
+
+}
+
 template <typename T, std::size_t N>
 std::string to_std_string(std::array<T,N> mag){
     std::stringstream ss;
