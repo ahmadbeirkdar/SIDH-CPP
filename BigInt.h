@@ -119,7 +119,24 @@ public:
             x = &a;y = &b;
         }
 
-        // To Implement
+        T c_i = 0;
+        T c_o = 0;
+        size_t minL = (x->length < y->length) ? x->length : y->length;
+        size_t maxL = (x->length > y->length) ? x->length : y->length;
+        r.length = maxL;
+        r.mag = new T[r.length];
+
+        for(auto i = 0; i < minL; i++){
+            BMath::SUBC<T>(r.mag[i],c_o,x->mag[i],y->mag[i],c_i);
+            c_i = c_o;
+        }
+        for(auto i = minL; i < maxL ; i++){
+            BMath::SUBC<T>(r.mag[i],c_o,((x->length == maxL) ? x->mag[i] : 0),((y->length == maxL) ? y->mag[i] : 0),c_i);
+            c_i = c_o;
+        }
+
+        if(c_i == 1)
+            r.positive = false;
 
 
     };
@@ -182,7 +199,7 @@ public:
 //    std::unique_ptr<T[]> mag;
     T *mag;
     bool positive = true;
-    int length{};
+    ssize_t length;
     Prime prime = BigInt::Prime::P434;
 
 
