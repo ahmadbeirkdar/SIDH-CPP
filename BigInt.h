@@ -36,8 +36,8 @@ public:
 //            mag = std::make_unique<T[]>(length);
             int firstL = (num.length() - 2)%(2*sizeof(T)) == 0 ? 2*sizeof(T) :  (num.length() - 2)%(2*sizeof(T));
             auto it = num.begin();
-            postive = *it != '-';
-            std::advance(it,postive ? 2 : 3); // Assuming the base 16 number as a string given starts 0x if positive otherwise advance 2
+            positive = (*it != '-');
+            std::advance(it,positive ? 2 : 3); // Assuming the base 16 number as a string given starts 0x if positive otherwise advance 2
             int j;
             T r;
             for(auto i = length - 1; i >= 0 ;i--){
@@ -59,6 +59,13 @@ public:
 //        if (a.prime != b.prime != r.prime)
 //            throw std::runtime_error("BigInt: To use the add_schoolbook method, both BigInts must have the same prime.");
 
+        if(a.positive && !b.positive || !a.positive && b.positive){
+            sub_schoolbook(r,a,b);
+            return;
+        }
+        else if(!a.positive && !b.positive)
+            r.positive = false;
+
         T c_i = 0;
         T c_o = 0;
         BigInt<T>* min = (a.length < b.length) ? &a : &b;
@@ -68,6 +75,7 @@ public:
             r.length = max->length;
 //            r.mag = DTS::make_unique_for_overwrite<T[]>(r.length);
             r.mag = new T[r.length];
+            r.positive = min->positive;
             for(auto i = 0; i < r.length; i++)
                 r.mag[i] = max->mag[i];
             return;
@@ -93,6 +101,10 @@ public:
 
     };
 
+    void sub_schoolbook(BigInt& r,BigInt& a, BigInt &b){
+        // To Implement
+    };
+
     // Dumb and enfficent meant for debugging, will be done better
     std::string to_std_string(){
         std::stringstream ss;
@@ -115,7 +127,7 @@ public:
                 break;
         }
 
-        return "0x" + temp;
+        return (this->positive ? "0x" : "-0x") + temp;
     }
 
     BigInt<T> operator+(BigInt<T> &b){
@@ -127,10 +139,20 @@ public:
     BigInt<T> operator>(BigInt<T> &b){
         if(this->length != b.length)
             return this->length > b.length;
+        else if(this->positive && !b.positive)
+            return true;
+        else if(!this->positive && !b.positive){
+            for(auto i = length - 1; i >= 0; i--)
+                if(this->mag[i] != b->mag[i])
+                    return this->mag[i] < b->mag[i];
 
-        for(auto i = length - 1; i >= 0; i--)
-            if(this->mag[i] != b->mag[i])
-                return this->mag[i] > b->mag[i];
+        }
+        else {
+            for(auto i = length - 1; i >= 0; i--)
+                if(this->mag[i] != b->mag[i])
+                    return this->mag[i] > b->mag[i];
+        }
+
 
     }
 
@@ -140,7 +162,7 @@ public:
     // It seems safe enough, at this point to use c style arrays, when at this point, everything is within bounds of the array no matter what.
 //    std::unique_ptr<T[]> mag;
     T *mag;
-    bool postive;
+    bool positive = true;
     int length{};
     Prime prime = BigInt::Prime::P434;
 
