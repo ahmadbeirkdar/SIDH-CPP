@@ -36,7 +36,8 @@ public:
 //            mag = std::make_unique<T[]>(length);
             int firstL = (num.length() - 2)%(2*sizeof(T)) == 0 ? 2*sizeof(T) :  (num.length() - 2)%(2*sizeof(T));
             auto it = num.begin();
-            std::advance(it,2); // Assuming the base 16 number as a string given starts 0x
+            postive = *it != '-';
+            std::advance(it,postive ? 2 : 3); // Assuming the base 16 number as a string given starts 0x if positive otherwise advance 2
             int j;
             T r;
             for(auto i = length - 1; i >= 0 ;i--){
@@ -139,6 +140,7 @@ public:
     // It seems safe enough, at this point to use c style arrays, when at this point, everything is within bounds of the array no matter what.
 //    std::unique_ptr<T[]> mag;
     T *mag;
+    bool postive;
     int length{};
     Prime prime = BigInt::Prime::P434;
 
