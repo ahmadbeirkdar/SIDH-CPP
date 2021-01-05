@@ -172,6 +172,12 @@ public:
         return r;
     }
 
+    BigInt<T> operator-(BigInt<T> &b){
+        BigInt<T> r;
+        sub_schoolbook(r,*this,b);
+        return r;
+    }
+
     BigInt<T> operator>(BigInt<T> &b){
         if(this->length != b.length)
             return this->length > b.length;
