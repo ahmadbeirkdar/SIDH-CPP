@@ -83,8 +83,7 @@ void addTests(){
     for(auto &o : outputs){
         auto a = BigInt<u_int64_t>(inputs.at(i++));
         auto b = BigInt<u_int64_t>(inputs.at(i++));
-        auto r = BigInt<u_int64_t>();
-        r = a + b;
+        auto r = a + b;
         assert(o == r.to_std_string());
     }
     auto t2 = std::chrono::high_resolution_clock::now();
@@ -96,8 +95,7 @@ void addTests(){
     for(auto &o : outputs){
         auto a = BigInt<u_int32_t>(inputs.at(i++));
         auto b = BigInt<u_int32_t>(inputs.at(i++));
-        auto r = BigInt<u_int32_t>();
-        r = a + b;
+        auto r = a + b;
         assert(o == r.to_std_string());
     }
 
@@ -106,8 +104,7 @@ void addTests(){
     for(auto &o : outputs){
         auto a = BigInt<u_int16_t>(inputs.at(i++));
         auto b = BigInt<u_int16_t>(inputs.at(i++));
-        auto r = BigInt<u_int16_t>();
-        r = a + b;
+        auto r = a + b;
         assert(o == r.to_std_string());
     }
 
@@ -116,8 +113,7 @@ void addTests(){
     for(auto &o : outputs){
         auto a = BigInt<u_int8_t>(inputs.at(i++));
         auto b = BigInt<u_int8_t>(inputs.at(i++));
-        auto r = BigInt<u_int8_t>();
-        r = a + b;
+        auto r = a + b;
         assert(o == r.to_std_string());
     }
 
