@@ -54,17 +54,19 @@ public:
             }
     };
 
-    void add_schoolbook(BigInt& r,BigInt& a, BigInt &b){
+    void add_schoolbook(BigInt& r,BigInt& a, BigInt &b, bool skipChecks = false){
         // No need to check prime, because it is not meant to be for modular arithmetic, rather just a test implementation of
 //        if (a.prime != b.prime != r.prime)
 //            throw std::runtime_error("BigInt: To use the add_schoolbook method, both BigInts must have the same prime.");
 
-        if(a.positive && !b.positive || !a.positive && b.positive){
+        if((!skipChecks) && (a.positive && !b.positive || !a.positive && b.positive)){
             sub_schoolbook(r,a,b);
             return;
         }
-        else if(!a.positive && !b.positive)
+        else if(!skipChecks && !a.positive && !b.positive)
             r.positive = false;
+        else
+            r.positive = true;
 
         T c_i = 0;
         T c_o = 0;
@@ -102,7 +104,24 @@ public:
     };
 
     void sub_schoolbook(BigInt& r,BigInt& a, BigInt &b){
+        BigInt<T>* x;
+        BigInt<T>* y;
+        if(!a.positive && b.positive){
+            r.positive = false;
+            add_schoolbook(r,a,b,true);
+        }
+        else if(a.positive && !b.positive)
+            add_schoolbook(r,a,b,true);
+        else if(!a.positive && !b.positive){
+            x = &b;y = &a;
+        }
+        else{
+            x = &a;y = &b;
+        }
+
         // To Implement
+
+
     };
 
     // Dumb and enfficent meant for debugging, will be done better
