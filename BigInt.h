@@ -109,14 +109,22 @@ public:
         if(!a.positive && b.positive){
             r.positive = false;
             add_schoolbook(r,a,b,true);
+            return;
         }
-        else if(a.positive && !b.positive)
+        else if(a.positive && !b.positive){
             add_schoolbook(r,a,b,true);
+            return;
+        }
         else if(!a.positive && !b.positive){
             x = &b;y = &a;
         }
         else{
             x = &a;y = &b;
+        }
+
+        if(b > a){
+            r.positive = false;
+            std::swap(x,y);
         }
 
         T c_i = 0;
@@ -128,6 +136,7 @@ public:
 
         for(auto i = 0; i < minL; i++){
             BMath::SUBC<T>(r.mag[i],c_o,x->mag[i],y->mag[i],c_i);
+//            std::cout << +r.mag[i] << " "<< +x->mag[i] << " " << +y->mag[i] << ((c_o == 1) ? " CARRY OUT": "  ") << ((c_i == 1) ? " CARRY IN": "  ") << std::endl; // DEBUGGING
             c_i = c_o;
         }
         for(auto i = minL; i < maxL ; i++){
@@ -140,6 +149,27 @@ public:
 
 
     };
+
+    bool greaterThan(BigInt<T> &a,BigInt<T> &b){
+        if(a.length != b.length)
+            return a.length > b.length;
+        else if(a.positive && !b.positive)
+            return true;
+        else if(!a.positive && !b.positive){
+            for(auto i = length - 1; i >= 0; i--)
+                if(a.mag[i] != b.mag[i])
+                    return a.mag[i] < b.mag[i];
+
+        }
+        else {
+            for(auto i = length - 1; i >= 0; i--)
+                if(a.mag[i] != b.mag[i])
+                    return a.mag[i] > b.mag[i];
+        }
+
+        return false;
+
+    }
 
     // Dumb and enfficent meant for debugging, will be done better
     std::string to_std_string(){
@@ -178,24 +208,8 @@ public:
         return r;
     }
 
-    BigInt<T> operator>(BigInt<T> &b){
-        if(this->length != b.length)
-            return this->length > b.length;
-        else if(this->positive && !b.positive)
-            return true;
-        else if(!this->positive && !b.positive){
-            for(auto i = length - 1; i >= 0; i--)
-                if(this->mag[i] != b->mag[i])
-                    return this->mag[i] < b->mag[i];
-
-        }
-        else {
-            for(auto i = length - 1; i >= 0; i--)
-                if(this->mag[i] != b->mag[i])
-                    return this->mag[i] > b->mag[i];
-        }
-
-
+    bool operator>(BigInt<T> &b){
+        return greaterThan(*this,b);
     }
 
 
