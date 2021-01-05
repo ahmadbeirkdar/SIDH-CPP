@@ -47,12 +47,10 @@ namespace BMath {
      */
     template <typename T>
     inline constexpr void SUBC(T &r, T &c_o, T a, T b, T c_i){
-        if(__builtin_sub_overflow(a,b,&r)){
-            __builtin_sub_overflow(r,c_i,&r);
+        if(__builtin_sub_overflow(a,b,&r) || __builtin_sub_overflow(a-b,c_i,&r)){
+            __builtin_sub_overflow(a-b,c_i,&r);
             c_o = 1;
         }
-        else if(__builtin_sub_overflow(a-b,c_i,&r))
-            c_o = 1;
         else{
             r = a - b - c_i;
             c_o = 0;
