@@ -68,7 +68,7 @@ public:
         }
         else if(!skipChecks && !a.positive && !b.positive)
             r.positive = false;
-        else
+        else if(!skipChecks)
             r.positive = true;
 
         T c_i = 0;
@@ -154,11 +154,15 @@ public:
     };
 
     bool greaterThan(BigInt<T> &a,BigInt<T> &b){
-        if(a.length != b.length)
+        if(a.length != b.length && a.positive && b.positive)
             return a.length > b.length;
         else if(a.positive && !b.positive)
             return true;
-        else if(!a.positive && !b.positive){
+        else if(!a.positive && b.positive)
+            return false;
+        else if(!a.positive && !b.positive && a.length != b.length)
+            return a.length < b.length;
+        else if(!a.positive && !b.positive && a.length == b.length){
             for(auto i = length - 1; i >= 0; i--)
                 if(a.mag[i] != b.mag[i])
                     return a.mag[i] < b.mag[i];
