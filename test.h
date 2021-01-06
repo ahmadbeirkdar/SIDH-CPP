@@ -48,8 +48,8 @@ void objectBenchmark(){
     i = 0;
     t1 = std::chrono::high_resolution_clock::now();
     for(auto &o : outputs){
-        auto a = mpz_class(inputs.at(i++).substr(2),16);
-        auto b = mpz_class(inputs.at(i++).substr(2),16);
+        auto a = mpz_class((inputs.at(i).at(0) == '-') ? ('-' + inputs.at(i).substr(3)) : inputs.at(i).substr(2),16);i++;
+        auto b = mpz_class((inputs.at(i).at(0) == '-') ? ('-' + inputs.at(i).substr(3)) : inputs.at(i).substr(2),16);i++;
         auto r = mpz_class();
     }
     t2 = std::chrono::high_resolution_clock::now();
@@ -127,11 +127,11 @@ void addTests(){
     i = 0;
     t1 = std::chrono::high_resolution_clock::now();
     for(auto &o : outputs){
-        auto a = mpz_class(inputs.at(i++).substr(2),16);
-        auto b = mpz_class(inputs.at(i++).substr(2),16);
+        auto a = mpz_class((inputs.at(i).at(0) == '-') ? ('-' + inputs.at(i).substr(3)) : inputs.at(i).substr(2),16);i++;
+        auto b = mpz_class((inputs.at(i).at(0) == '-') ? ('-' + inputs.at(i).substr(3)) : inputs.at(i).substr(2),16);i++;
         auto r = mpz_class();
         r = a + b;
-        assert(o.substr(2) == r.get_str(16));
+        assert(((o.at(0) == '-') ? ('-'+o.substr(3)) : o.substr(2))  == r.get_str(16));
     }
     t2 = std::chrono::high_resolution_clock::now();
 
@@ -209,8 +209,8 @@ void subTests(){
     i = 0;
     t1 = std::chrono::high_resolution_clock::now();
     for(auto &o : outputs){
-        auto a = mpz_class(inputs.at(i++).substr(2),16);
-        auto b = mpz_class(inputs.at(i++).substr(2),16);
+        auto a = mpz_class((inputs.at(i).at(0) == '-') ? ('-' + inputs.at(i).substr(3)) : inputs.at(i).substr(2),16);i++;
+        auto b = mpz_class((inputs.at(i).at(0) == '-') ? ('-' + inputs.at(i).substr(3)) : inputs.at(i).substr(2),16);i++;
         auto r = mpz_class();
         r = a - b;
         assert(((o.at(0) == '-') ? ('-'+o.substr(3)) : o.substr(2))  == r.get_str(16));
