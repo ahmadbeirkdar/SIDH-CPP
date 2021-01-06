@@ -213,7 +213,7 @@ void subTests(){
         auto b = mpz_class(inputs.at(i++).substr(2),16);
         auto r = mpz_class();
         r = a - b;
-        assert(o.substr(2) == r.get_str(16));
+        assert(((o.at(0) == '-') ? ('-'+o.substr(3)) : o.substr(2))  == r.get_str(16));
     }
     t2 = std::chrono::high_resolution_clock::now();
 
