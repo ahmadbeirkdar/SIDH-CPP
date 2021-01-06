@@ -27,16 +27,19 @@ public:
             : mag(mag), prime(prime),length(sizeof(mag)/mag[0]) {};
 
     explicit BigInt(std::string_view num, BigInt::Prime prime = BigInt::Prime::P434)
-    : prime(prime), length(std::ceil((num.length() - 2.0)/(2.0*sizeof(T))))
+    : prime(prime)
     {
 //            if(num.substr(0,2) != "0x")
 //                throw std::runtime_error("BigInt: Invalid number, number must be in base 16 and starting with 0x");
 //            mag = std::make_unique_for_overwrite<T[]>(length);
-            mag = new T[length];
+
 //            mag = std::make_unique<T[]>(length);
-            int firstL = (num.length() - 2)%(2*sizeof(T)) == 0 ? 2*sizeof(T) :  (num.length() - 2)%(2*sizeof(T));
+
             auto it = num.begin();
             positive = (*it != '-');
+            int firstL = (num.length() - (positive ? 2 : 3))%(2*sizeof(T)) == 0 ? 2*sizeof(T) :  (num.length() - (positive ? 2 : 3))%(2*sizeof(T));
+            length = positive ? std::ceil((num.length() - 2.0)/(2.0*sizeof(T))) : std::ceil((num.length() - 3.0)/(2.0*sizeof(T)));
+            mag = new T[length];
             std::advance(it,positive ? 2 : 3); // Assuming the base 16 number as a string given starts 0x if positive otherwise advance 2
             int j;
             T r;
