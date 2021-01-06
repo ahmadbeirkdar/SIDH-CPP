@@ -13,7 +13,7 @@ Currently working on:
 BigInt:
 * Compile time primes, based on BigInt template type  - Done
 * Addition - Done
-* Subtraction
+* Subtraction - Done
 * Modular arithmetic
 * Multiplication
 * constexpr everything possible ;p
