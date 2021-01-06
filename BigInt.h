@@ -62,8 +62,12 @@ public:
 //        if (a.prime != b.prime != r.prime)
 //            throw std::runtime_error("BigInt: To use the add_schoolbook method, both BigInts must have the same prime.");
 
-        if((!skipChecks) && (a.positive && !b.positive || !a.positive && b.positive)){
-            sub_schoolbook(r,a,b);
+        if((!skipChecks) && (!a.positive && b.positive)){
+            sub_schoolbook(r,b,a,true);
+            return;
+        }
+        else if((!skipChecks) && (a.positive && !b.positive)){
+            sub_schoolbook(r,a,b,true);
             return;
         }
         else if(!skipChecks && !a.positive && !b.positive)
@@ -106,26 +110,26 @@ public:
 
     };
 
-    void sub_schoolbook(BigInt& r,BigInt& a, BigInt &b){
+    void sub_schoolbook(BigInt& r,BigInt& a, BigInt &b,bool skipChecks = false){
         BigInt<T>* x;
         BigInt<T>* y;
-        if(!a.positive && b.positive){
+        if((!skipChecks) && !a.positive && b.positive){
             r.positive = false;
             add_schoolbook(r,a,b,true);
             return;
         }
-        else if(a.positive && !b.positive){
+        else if((!skipChecks) && a.positive && !b.positive){
             add_schoolbook(r,a,b,true);
             return;
         }
-        else if(!a.positive && !b.positive){
+        else if((!skipChecks) && !a.positive && !b.positive){
             x = &b;y = &a;
         }
         else{
             x = &a;y = &b;
         }
 
-        if(b > a){
+        if(b > a || (skipChecks && greaterThan(b,a,true))){
             r.positive = false;
             std::swap(x,y);
         }
@@ -153,16 +157,16 @@ public:
 
     };
 
-    bool greaterThan(BigInt<T> &a,BigInt<T> &b){
-        if(a.length != b.length && a.positive && b.positive)
+    bool greaterThan(BigInt<T> &a,BigInt<T> &b, bool magOnly = false){
+        if(a.length != b.length && (magOnly || (a.positive && b.positive)))
             return a.length > b.length;
-        else if(a.positive && !b.positive)
+        else if(!magOnly && a.positive && !b.positive)
             return true;
-        else if(!a.positive && b.positive)
+        else if(!magOnly && !a.positive && b.positive)
             return false;
-        else if(!a.positive && !b.positive && a.length != b.length)
+        else if(!magOnly && !a.positive && !b.positive && a.length != b.length)
             return a.length < b.length;
-        else if(!a.positive && !b.positive && a.length == b.length){
+        else if(!magOnly && !a.positive && !b.positive && a.length == b.length){
             for(auto i = length - 1; i >= 0; i--)
                 if(a.mag[i] != b.mag[i])
                     return a.mag[i] < b.mag[i];
