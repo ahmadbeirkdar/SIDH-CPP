@@ -58,7 +58,7 @@ namespace BMath {
     }
 
     template <typename T>
-    inline constexpr void MULC(T &r, T &c_o, T a, T b){
+    inline constexpr void MULC(T &r, T &c_o, T a, T b, T c_i){
         T bh, temp;
         T albl, albh, ahbl, ahbh, carry;
         T mask_low = std::numeric_limits<T>::max() >> (sizeof(T)*4);
@@ -78,6 +78,9 @@ namespace BMath {
         c_o = temp & mask_low;
         carry = temp & mask_high;
         c_o ^= (ahbh & mask_high) + carry;
+
+        ADDC<T>(r,temp,r,c_i,0);
+        c_o += temp;
     }
 
     static constexpr long hextable[] = {
