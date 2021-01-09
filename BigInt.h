@@ -157,6 +157,43 @@ public:
 
     };
 
+    void multiply(BigInt& r,const BigInt& a,const BigInt &b){
+        if(a.length == 0 || b.length == 0){
+            r.length = 0;
+            r.mag = new T[1];
+            r.mag[0] = 0;
+            return;
+        }
+
+        T c_o = 0;
+        T c_i = 0;
+        T ans = 0;
+        T t1 = 0;
+        T t2 = 0;
+
+        r.length = a.length + b.length;
+        r.mag = new T[r.length];
+        r.positive = (a.positive && b.positive) || (!a.positive && !b.positive);
+
+        for(auto i = 0; i < a.length; i++){
+            c_i = 0;
+            for(auto j = 0; j < b.length; j++){
+                BMath::MULC<T>(ans,c_o,a.mag[i],b.mag[j],c_i);
+                t1 = c_o;
+                BMath::ADDC<T>(r.mag[i+j],c_o,r.mag[i+j],ans,0);
+                t2 = c_o;
+                BMath::ADDC<T>(c_i,c_o,t1,t2,0);
+            }
+            r.mag[i+b.length] = c_i;
+        }
+
+    }
+
+//    void kartsuba(BigInt& r,const BigInt& a,const BigInt &b){
+//        size_t m = std::floor(std::min(a.length,b.length)/2.0);
+//
+//    }
+
     bool greaterThan(BigInt<T> &a,BigInt<T> &b, bool magOnly = false){
         if(a.length != b.length && (magOnly || (a.positive && b.positive)))
             return a.length > b.length;
