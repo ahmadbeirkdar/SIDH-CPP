@@ -255,6 +255,11 @@ public:
         sub_schoolbook(r,*this,b);
         return r;
     }
+    BigInt<T> operator*(BigInt<T> &b){
+        BigInt<T> r;
+        multiply(r,*this,b);
+        return r;
+    }
 
     bool operator>(BigInt<T> &b){
         return greaterThan(*this,b);
