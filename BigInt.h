@@ -175,7 +175,14 @@ public:
         r.mag = new T[r.length];
         r.positive = (a.positive && b.positive) || (!a.positive && !b.positive);
 
-        for(auto i = 0; i < a.length; i++){
+        for(auto i = 0; i < b.length; i++){
+            BMath::MULC(ans,c_o,a.mag[0],b.mag[i],c_i);
+            r.mag[i] = ans;
+            c_i = c_o;
+        }
+        r.mag[b.length] = c_i;
+
+        for(auto i = 1; i < a.length; i++){
             c_i = 0;
             for(auto j = 0; j < b.length; j++){
                 BMath::MULC<T>(ans,c_o,a.mag[i],b.mag[j],c_i);
