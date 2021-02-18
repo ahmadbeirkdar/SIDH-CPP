@@ -15,7 +15,6 @@
 
 template <typename T>
 class BigInt {
-
     static_assert(std::is_unsigned<T>::value, "BigInt template parameter must be unsigned.");
     static_assert(std::is_integral<T>::value, "BigInt template parameter must be integral.");
 
@@ -27,29 +26,18 @@ public:
             : mag(mag), prime(prime),length(sizeof(mag)/mag[0]) {};
 
     explicit BigInt(std::string_view num, BigInt::Prime prime = BigInt::Prime::P434)
-    : prime(prime)
-    {
-            auto it = num.begin();
-            positive = (*it != '-');
-            int firstL = (num.length() - (positive ? 2 : 3))%(2*sizeof(T)) == 0 ? 2*sizeof(T) :  (num.length() - (positive ? 2 : 3))%(2*sizeof(T));
-            length = positive ? std::ceil((num.length() - 2.0)/(2.0*sizeof(T))) : std::ceil((num.length() - 3.0)/(2.0*sizeof(T)));
-//            mag = new T[length];
-            mag = DTS::make_unique_for_overwrite<T[]>(length);
-            std::advance(it,positive ? 2 : 3); // Assuming the base 16 number as a string given starts 0x if positive otherwise advance 2
-            int j;
-            T r;
-            for(auto i = length - 1; i >= 0 ;i--){
-                r = 0;
-                j = 0;
+            : prime(prime) {
+        positive = (num.at(0) != '-');
+        int firstL = (num.length() - (positive ? 2 : 3))%(2*sizeof(T)) == 0 ? 2*sizeof(T) :  (num.length() - (positive ? 2 : 3))%(2*sizeof(T));
+        length = positive ? std::ceil((num.length() - 2.0)/(2.0*sizeof(T))) : std::ceil((num.length() - 3.0)/(2.0*sizeof(T)));
+        mag = DTS::make_unique_for_overwrite<T[]>(length);
 
-                while (it != num.end() && r >= 0 && j < firstL) {
-                    r = (r << 4) | BMath::hextable[*it++];
-                    j++;
-                }
-
-                mag[i] = r;
-                firstL = 2*sizeof(T);
-            }
+        auto j = positive ? 2 : 3;
+        for(auto i = length - 1; i >= 0 ;i--){
+            mag[i] = BMath::FromHex<T>(num.substr(j,firstL));
+            j += firstL;
+            firstL = 2*sizeof(T);
+        }
     };
 
     void add_schoolbook(BigInt& r,BigInt& a, BigInt &b, bool skipChecks = false){
@@ -267,8 +255,6 @@ public:
 
 
 public:
-    // Removed usage of unique pointer c style arrays, because there is an overhead when accessing elements even when std::make_unique_for_overwrite was implemented to take control of the intilization process
-    // It seems safe enough, at this point to use c style arrays, when at this point, everything is within bounds of the array no matter what.
     std::unique_ptr<T[]> mag;
     bool positive = true;
     ssize_t length;
@@ -277,7 +263,6 @@ public:
 
 
     static constexpr auto P434_mag = BPrime::construct_prime<T,434>("0x2341F271773446CFC5FD681C520567BC65C783158AEA3FDC1767AE2FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF").mag;
-
     // Testing P751 prime.
     static constexpr auto P751_mag = BPrime::construct_prime<T,751>("0x6FE5D541F71C0E12909F97BADC668562B5045CB25748084E9867D6EBE876DA959B1A13F7CC76E3EC968549F878A8EEAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF").mag;
 
