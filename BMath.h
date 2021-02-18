@@ -97,6 +97,18 @@ namespace BMath {
             -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1
     };
 
+    template <typename T>
+    inline constexpr T FromHex(const std::string_view &hex){
+        T r = 0;
+
+        for(const auto &i : hex)
+            r = (r << 4) | hextable[i];
+
+        return r;
+    }
+
+
+
 }
 
 #endif //SIDH_CPP_BMATH_H
