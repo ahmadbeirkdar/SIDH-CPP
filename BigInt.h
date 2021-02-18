@@ -29,17 +29,12 @@ public:
     explicit BigInt(std::string_view num, BigInt::Prime prime = BigInt::Prime::P434)
     : prime(prime)
     {
-//            if(num.substr(0,2) != "0x")
-//                throw std::runtime_error("BigInt: Invalid number, number must be in base 16 and starting with 0x");
-//            mag = std::make_unique_for_overwrite<T[]>(length);
-
-//            mag = std::make_unique<T[]>(length);
-
             auto it = num.begin();
             positive = (*it != '-');
             int firstL = (num.length() - (positive ? 2 : 3))%(2*sizeof(T)) == 0 ? 2*sizeof(T) :  (num.length() - (positive ? 2 : 3))%(2*sizeof(T));
             length = positive ? std::ceil((num.length() - 2.0)/(2.0*sizeof(T))) : std::ceil((num.length() - 3.0)/(2.0*sizeof(T)));
-            mag = new T[length];
+//            mag = new T[length];
+            mag = DTS::make_unique_for_overwrite<T[]>(length);
             std::advance(it,positive ? 2 : 3); // Assuming the base 16 number as a string given starts 0x if positive otherwise advance 2
             int j;
             T r;
@@ -82,8 +77,7 @@ public:
 
         if(min->length == 0){
             r.length = max->length;
-//            r.mag = DTS::make_unique_for_overwrite<T[]>(r.length);
-            r.mag = new T[r.length];
+            r.mag = DTS::make_unique_for_overwrite<T[]>(r.length);
             r.positive = min->positive;
             for(auto i = 0; i < r.length; i++)
                 r.mag[i] = max->mag[i];
@@ -91,8 +85,7 @@ public:
         }
 
         r.length = max->length;
-//        r.mag = DTS::make_unique_for_overwrite<T[]>(r.length + 1);
-        r.mag = new T[r.length + 1];
+        r.mag = DTS::make_unique_for_overwrite<T[]>(r.length + 1);
         for(auto i = 0; i < min->length; i++){
             BMath::ADDC<T>(r.mag[i],c_o,min->mag[i],max->mag[i],c_i);
 //            std::cout << r.mag[i] << " "<< max->mag[i] << " " << min->mag[i] << ((c_o == 1) ? " CARRY OUT": "  ") << ((c_i == 1) ? " CARRY IN": "  ") << std::endl; // DEBUGGING
@@ -139,7 +132,7 @@ public:
         size_t minL = (x->length < y->length) ? x->length : y->length;
         size_t maxL = (x->length > y->length) ? x->length : y->length;
         r.length = maxL;
-        r.mag = new T[r.length];
+        r.mag = DTS::make_unique_for_overwrite<T[]>(r.length);
 
         for(auto i = 0; i < minL; i++){
             BMath::SUBC<T>(r.mag[i],c_o,x->mag[i],y->mag[i],c_i);
@@ -160,7 +153,7 @@ public:
     void multiply(BigInt& r,const BigInt& a,const BigInt &b){
         if(a.length == 0 || b.length == 0){
             r.length = 0;
-            r.mag = new T[1];
+            r.mag = DTS::make_unique_for_overwrite<T[]>(1);
             r.mag[0] = 0;
             return;
         }
@@ -172,7 +165,7 @@ public:
         T t2 = 0;
 
         r.length = a.length + b.length;
-        r.mag = new T[r.length];
+        r.mag = DTS::make_unique_for_overwrite<T[]>(r.length + 1);
         r.positive = (a.positive && b.positive) || (!a.positive && !b.positive);
 
         for(auto i = 0; i < b.length; i++){
@@ -276,8 +269,7 @@ public:
 public:
     // Removed usage of unique pointer c style arrays, because there is an overhead when accessing elements even when std::make_unique_for_overwrite was implemented to take control of the intilization process
     // It seems safe enough, at this point to use c style arrays, when at this point, everything is within bounds of the array no matter what.
-//    std::unique_ptr<T[]> mag;
-    T *mag;
+    std::unique_ptr<T[]> mag;
     bool positive = true;
     ssize_t length;
     Prime prime = BigInt::Prime::P434;
