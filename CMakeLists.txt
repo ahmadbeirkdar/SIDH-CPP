@@ -19,7 +19,6 @@ endif(UNIX AND NOT APPLE)
 
 add_executable(SIDH_CPP main.cpp BigInt.h BMath.h BPrime.h test.h DTS.h)
 
-
 include_directories(${PROJECT_NAME} ${GMP_DIR}/include)
 target_link_libraries(${PROJECT_NAME}
         "${GMP_DIR}/lib/libgmp.a"
