@@ -17,7 +17,6 @@ if(UNIX AND NOT APPLE)
     set(GMP_DIR "/home/linuxbrew/.linuxbrew/Cellar/gmp/6.2.1")
 endif(UNIX AND NOT APPLE)
 
-
 add_executable(SIDH_CPP main.cpp BigInt.h BMath.h BPrime.h test.h DTS.h)
 
 
