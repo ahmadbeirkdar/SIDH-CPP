@@ -1,5 +1,6 @@
 # SIDH-CPP
 [![Build status](https://badge.buildkite.com/5a306664bc2ef67dff9660c1b7da7bfaac31b803b654d0964a.svg)](https://buildkite.com/bassem/sidh-cpp)
+
 SIDH implementation in C++20 in the works
 
 To experiment with modern features for a fast, efficient and modular library.
