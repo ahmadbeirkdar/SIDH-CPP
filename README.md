@@ -1,4 +1,5 @@
 # SIDH-CPP
+[![Build status](https://badge.buildkite.com/9cd0540a5030fac1c06272a49241dda1b60dbbd1c7fd0f7f70.svg)](https://buildkite.com/bassem/sidh-cpp)
 
 SIDH implementation in C++20 in the works
 
