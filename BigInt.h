@@ -14,10 +14,10 @@
 #include <cmath>
 
 template <typename T>
-class BigInt {
-    static_assert(std::is_unsigned<T>::value, "BigInt template parameter must be unsigned.");
-    static_assert(std::is_integral<T>::value, "BigInt template parameter must be integral.");
+concept is_u_int = std::is_unsigned<T>::value && std::is_integral<T>::value;
 
+template <is_u_int T>
+class BigInt {
 public:
     enum Prime {P434};
 
@@ -157,7 +157,7 @@ public:
         r.positive = (a.positive && b.positive) || (!a.positive && !b.positive);
 
         for(auto i = 0; i < b.length; i++){
-            BMath::MULC(ans,c_o,a.mag[0],b.mag[i],c_i);
+            BMath::MULC<T>(ans,c_o,a.mag[0],b.mag[i],c_i);
             r.mag[i] = ans;
             c_i = c_o;
         }
@@ -195,7 +195,6 @@ public:
             for(auto i = length - 1; i >= 0; i--)
                 if(a.mag[i] != b.mag[i])
                     return a.mag[i] < b.mag[i];
-
         }
         else {
             for(auto i = length - 1; i >= 0; i--)
@@ -204,7 +203,6 @@ public:
         }
 
         return false;
-
     }
 
     // Dumb and enfficent meant for debugging, will be done better
@@ -257,7 +255,7 @@ public:
 public:
     std::unique_ptr<T[]> mag;
     bool positive = true;
-    ssize_t length;
+    ssize_t length = 0;
     Prime prime = BigInt::Prime::P434;
 
 
