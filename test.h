@@ -413,3 +413,36 @@ void customTests(){
     std::cout << r3.to_std_string() << std::endl;
     assert(r3.to_std_string() == "0x169B7D3CA093C49CF7AB9230F6C5ED958279C8CDA1A9352123023053B9C47633AECD3F162A268C07DF413");
 }
+
+void compareTests() {
+    std::vector<std::string> inputs;
+    std::vector<bool> outputs;
+
+    std::ifstream file("../tests/compare_inputs.txt");
+
+    if(file.is_open()){
+        std::string line;
+        while(std::getline(file,line))
+            inputs.push_back(line);
+        file.close();
+    }
+    std::ifstream file2("../tests/compare_result.txt");
+    if(file2.is_open()){
+        std::string line;
+        while(std::getline(file2,line))
+            outputs.push_back(std::stoi(line));
+        file.close();
+    }
+
+    int i = 0;
+    auto t1 = std::chrono::high_resolution_clock::now();
+    for(const auto &o : outputs){
+        auto a = BigInt<u_int64_t>(inputs.at(i++));
+        auto b = BigInt<u_int64_t>(inputs.at(i++));
+        auto r = a > b;
+
+        assert(o == r);
+    }
+
+    std::cout << "Compare Tests passed, tested: " << i/2 << std::endl;
+}

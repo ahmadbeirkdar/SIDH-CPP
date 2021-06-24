@@ -7,6 +7,8 @@ int main() {
     primeConstructorTest();
     subTests();
     mulTests();
+    compareTests();
 //    customTests();
+//std::cout << BMath::FromHex<int>("FF");
     return 0;
 }
