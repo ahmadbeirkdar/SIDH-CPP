@@ -40,7 +40,7 @@ public:
         }
     };
 
-    constexpr void add_schoolbook(BigInt& r,BigInt& a, BigInt &b, bool skipChecks = false){
+    constexpr auto add_schoolbook(BigInt& r,BigInt& a, BigInt &b, bool skipChecks = false) -> void {
         // No need to check prime, because it is not meant to be for modular arithmetic, rather just a test implementation of
 //        if (a.prime != b.prime != r.prime)
 //            throw std::runtime_error("BigInt: To use the add_schoolbook method, both BigInts must have the same prime.");
@@ -91,7 +91,7 @@ public:
 
     };
 
-    constexpr void sub_schoolbook(BigInt& r,BigInt& a, BigInt &b,bool skipChecks = false){
+    constexpr auto sub_schoolbook(BigInt& r,BigInt& a, BigInt &b,bool skipChecks = false) -> void {
         BigInt<T>* x;
         BigInt<T>* y;
         if((!skipChecks) && !a.positive && b.positive){
@@ -138,7 +138,7 @@ public:
 
     };
 
-    constexpr void multiply(BigInt& r,const BigInt& a,const BigInt &b){
+    constexpr auto multiply(BigInt& r,const BigInt& a,const BigInt &b) -> void {
         if(a.length == 0 || b.length == 0){
             r.length = 0;
             r.mag = DTS::make_unique_for_overwrite<T[]>(1);
@@ -182,7 +182,7 @@ public:
 //
 //    }
 
-    constexpr bool greaterThan(BigInt<T> &a,BigInt<T> &b, bool magOnly = false){
+    constexpr auto greaterThan(BigInt<T> &a,BigInt<T> &b, bool magOnly = false) -> bool {
         if(a.length != b.length && (magOnly || (a.positive && b.positive)))
             return a.length > b.length;
         else if(!magOnly && a.positive && !b.positive)
@@ -206,7 +206,7 @@ public:
     }
 
     // Dumb and enfficent meant for debugging, will be done better
-    std::string to_std_string(){
+    auto to_std_string() -> std::string {
         std::stringstream ss;
         for(auto i = length - 1; i >= 0 ; i--){
             std::stringstream temp;
@@ -230,24 +230,24 @@ public:
         return (this->positive ? "0x" : "-0x") + temp;
     }
 
-    constexpr BigInt<T> operator+(BigInt<T> &b){
+    constexpr auto operator+(BigInt<T> &b) -> BigInt<T>{
         BigInt<T> r;
         add_schoolbook(r,*this,b);
         return r;
     }
 
-    constexpr BigInt<T> operator-(BigInt<T> &b){
+    constexpr auto operator-(BigInt<T> &b) -> BigInt<T>{
         BigInt<T> r;
         sub_schoolbook(r,*this,b);
         return r;
     }
-    constexpr BigInt<T> operator*(BigInt<T> &b){
+    constexpr auto operator*(BigInt<T> &b) -> BigInt<T>{
         BigInt<T> r;
         multiply(r,*this,b);
         return r;
     }
 
-    constexpr bool operator>(BigInt<T> &b){
+    constexpr auto operator>(BigInt<T> &b) -> bool {
         return greaterThan(*this,b);
     }
 
