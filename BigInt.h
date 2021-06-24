@@ -25,7 +25,7 @@ public:
     constexpr explicit BigInt(T *mag, BigInt::Prime prime = BigInt::Prime::P434)
             : mag(mag), prime(prime),length(sizeof(mag)/mag[0]) {};
 
-    explicit BigInt(std::string_view num, BigInt::Prime prime = BigInt::Prime::P434)
+    constexpr explicit BigInt(std::string_view num, BigInt::Prime prime = BigInt::Prime::P434)
             : prime(prime) {
         positive = (num.at(0) != '-');
         int firstL = (num.length() - (positive ? 2 : 3))%(2*sizeof(T)) == 0 ? 2*sizeof(T) :  (num.length() - (positive ? 2 : 3))%(2*sizeof(T));
@@ -40,7 +40,7 @@ public:
         }
     };
 
-    void add_schoolbook(BigInt& r,BigInt& a, BigInt &b, bool skipChecks = false){
+    constexpr void add_schoolbook(BigInt& r,BigInt& a, BigInt &b, bool skipChecks = false){
         // No need to check prime, because it is not meant to be for modular arithmetic, rather just a test implementation of
 //        if (a.prime != b.prime != r.prime)
 //            throw std::runtime_error("BigInt: To use the add_schoolbook method, both BigInts must have the same prime.");
@@ -91,7 +91,7 @@ public:
 
     };
 
-    void sub_schoolbook(BigInt& r,BigInt& a, BigInt &b,bool skipChecks = false){
+    constexpr void sub_schoolbook(BigInt& r,BigInt& a, BigInt &b,bool skipChecks = false){
         BigInt<T>* x;
         BigInt<T>* y;
         if((!skipChecks) && !a.positive && b.positive){
@@ -138,7 +138,7 @@ public:
 
     };
 
-    void multiply(BigInt& r,const BigInt& a,const BigInt &b){
+    constexpr void multiply(BigInt& r,const BigInt& a,const BigInt &b){
         if(a.length == 0 || b.length == 0){
             r.length = 0;
             r.mag = DTS::make_unique_for_overwrite<T[]>(1);
@@ -182,7 +182,7 @@ public:
 //
 //    }
 
-    bool greaterThan(BigInt<T> &a,BigInt<T> &b, bool magOnly = false){
+    constexpr bool greaterThan(BigInt<T> &a,BigInt<T> &b, bool magOnly = false){
         if(a.length != b.length && (magOnly || (a.positive && b.positive)))
             return a.length > b.length;
         else if(!magOnly && a.positive && !b.positive)
@@ -230,24 +230,24 @@ public:
         return (this->positive ? "0x" : "-0x") + temp;
     }
 
-    BigInt<T> operator+(BigInt<T> &b){
+    constexpr BigInt<T> operator+(BigInt<T> &b){
         BigInt<T> r;
         add_schoolbook(r,*this,b);
         return r;
     }
 
-    BigInt<T> operator-(BigInt<T> &b){
+    constexpr BigInt<T> operator-(BigInt<T> &b){
         BigInt<T> r;
         sub_schoolbook(r,*this,b);
         return r;
     }
-    BigInt<T> operator*(BigInt<T> &b){
+    constexpr BigInt<T> operator*(BigInt<T> &b){
         BigInt<T> r;
         multiply(r,*this,b);
         return r;
     }
 
-    bool operator>(BigInt<T> &b){
+    constexpr bool operator>(BigInt<T> &b){
         return greaterThan(*this,b);
     }
 
