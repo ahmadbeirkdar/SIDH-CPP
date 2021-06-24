@@ -83,7 +83,7 @@ namespace BMath {
         c_o += temp;
     }
 
-    static constexpr long hextable[] = {
+    static inline constexpr long hextable[] = {
             -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
             -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
             -1,-1, 0,1,2,3,4,5,6,7,8,9,-1,-1,-1,-1,-1,-1,-1,10,11,12,13,14,15,-1,
@@ -98,7 +98,7 @@ namespace BMath {
     };
 
     template <typename T>
-    inline constexpr T FromHex(const std::string_view &hex){
+    inline constexpr T FromHex(std::string_view hex){
         T r = 0;
 
         for(const auto &i : hex)
